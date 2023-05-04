@@ -1,47 +1,56 @@
-import { useState, useRef } from 'react';
-import { Link } from 'react-router-dom';
+import { useState, useRef, useContext } from 'react';
+// import { Link } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
+// import { useDispatch } from 'react-redux';
 
-import { authActions } from '../../store/auth';
-import classes from './auth.module.css';
+// import { authActions } from '../../store/auth';
+// import classes from './auth.module.css';
+import Button from 'react-bootstrap/Button';
+import Form from 'react-bootstrap/Form';
+
+import { AppContext } from '../context/AppContext';
 
 const Login = () => {
 
     // const token = useSelector((state) => state.auth.token)
-    const dispatch = useDispatch()
-    const navigate = useNavigate()
+    // const dispatch = useDispatch()
+    // const navigate = useNavigate()
+    const {login} = useContext(AppContext)
 
     const emailInputRef = useRef();
     const passwordInputRef = useRef();
 
+    // const [isLoading, setIsLoading] = useState(false);
+    // const [show, setShow] = useState(false);
+
+    // const sendEmail = async () => {
+    //     setIsLoading(true)
+    //     const email = emailInputRef.current.value
+    //     const url = "https://identitytoolkit.googleapis.com/v1/accounts:sendOobCode?key=AIzaSyBQICA6ovCbZscp1SQ8m_QhjVdHDBN7SoU"
+    //     const options = {
+    //       method: 'POST',
+    //       body: JSON.stringify({
+    //         requestType: "PASSWORD_RESET",
+    //         email,
+    //       }),
+    //       headers: {
+    //         'Content-Type': 'application/json',
+    //       },
+    //     }
+    //     try {
+
+    //       const res = await fetch(url, options)
+    //       const data = await res.json()
+    //       setIsLoading(false)
+    //       navigate('/login')
+    //     } catch (error) {
+    //       console.error(error)
+    //     }
+    // }
+    const navigate = useNavigate()
+
     const [isLoading, setIsLoading] = useState(false);
-    const [show, setShow] = useState(false);
-
-    const sendEmail = async () => {
-        setIsLoading(true)
-        const email = emailInputRef.current.value
-        const url = "https://identitytoolkit.googleapis.com/v1/accounts:sendOobCode?key=AIzaSyBLAZfI3knkbyxNuEyi2t-QrjiOXbPCZVc"
-        const options = {
-          method: 'POST',
-          body: JSON.stringify({
-            requestType: "PASSWORD_RESET",
-            email,
-          }),
-          headers: {
-            'Content-Type': 'application/json',
-          },
-        }
-        try {
-
-          const res = await fetch(url, options)
-          const data = await res.json()
-          setIsLoading(false)
-          navigate('/login')
-        } catch (error) {
-          console.error(error)
-        }
-    }
+    const [message, setMessage] = useState('')
 
 
     const submitHandler = (event) => {
@@ -51,9 +60,12 @@ const Login = () => {
         const enteredPassword = passwordInputRef.current.value;
 
         let url =
-            'https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=AIzaSyBLAZfI3knkbyxNuEyi2t-QrjiOXbPCZVc';
+            'https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=AIzaSyBQICA6ovCbZscp1SQ8m_QhjVdHDBN7SoU';
 
         if (enteredEmail != '' && enteredPassword != '') {
+            setMessage('All Fields are mandatory')
+            return
+        }
 
             setIsLoading(true);
 
@@ -81,70 +93,41 @@ const Login = () => {
                     }
                 })
                 .then(data => {
-                    dispatch(authActions.login(data.idToken))
-                    localStorage.setItem('token',data.idToken)
-                    navigate('/')
+                    // dispatch(authActions.login(data.idToken))
+                    // localStorage.setItem('token',data.idToken)
+                    // navigate('/')
+                    login(data)
+                    navigate('/home')
                 })
                 .catch((err) => {
                     alert(err.message);
                 });
-        }
+        
     };
 
     return (
-        <section className={classes.auth}>
-            <h1>Log In</h1>
-            <form onSubmit={submitHandler}>
-                <div className={classes.control}>
-                    <label htmlFor='email'>Your Email</label>
-                    <input type='email' id='email' required ref={emailInputRef} />
-                </div>
-                {
-                    !show && (
-                    <>
-                    <div className={classes.control}>
-                    <label htmlFor='password'>Your Password</label>
-                    <input
-                        type='password'
-                        id='password'
-                        required
-                        ref={passwordInputRef}
-                    />
-                </div>
-                <div className={classes.actions}>
-                <p><a href="#" onClick={() => setShow(show => !show)}> Forgot your Password ?</a></p>
+        <section className='auth'>
+        <h1>Log In</h1>
+        <Form>
+          <Form.Group className="mb-3" controlId="loginEmail">
+            <Form.Label>Your Email</Form.Label>
+            <Form.Control type="email" placeholder="Enter email" required ref={emailInputRef} />
+          </Form.Group>
 
-                {isLoading && <p>Sending request...</p>}
-                <button
-                    type='submit'
-                    className={classes.toggle}
-                >
-                    Login
-                </button>
-                <p>Or <Link to={'/signup'}>Signup...</Link></p>
-
-            </div>
-            </>
-            )
-                }
-                {
-                    show && 
-                <div className={classes.actions}>
-
-                    {isLoading && <p>Sending request...</p>}
-                    <button
-                        type='button'
-                        className={classes.toggle}
-                        onClick={sendEmail}
-                    >
-                        Send Link
-                    </button>
-
-                </div>
-                }
-
-            </form>
-        </section>
+          <Form.Group className="mb-3" controlId="loginPassword">
+            <Form.Label>Your Password</Form.Label>
+            <Form.Control type='password'
+              required
+              ref={passwordInputRef} placeholder="Password" />
+          </Form.Group>
+          {message !== '' ? <Form.Text className='me-4'>{message}</Form.Text> : ''}
+          <Button variant="primary" type="submit" onClick={submitHandler}>
+          {isLoading ? 'Logging In...' : 'Log In'}
+          </Button>
+          <br />
+          <Form.Text ><a href="#"> Forgot Password ?</a></Form.Text>
+        </Form>
+      </section >
     );
 };
 

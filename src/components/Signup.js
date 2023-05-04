@@ -1,5 +1,5 @@
 import { useState, useRef } from 'react';
-import { Link } from 'react-router-dom';
+import { Link,useNavigate } from 'react-router-dom';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 
@@ -10,6 +10,8 @@ const Signup = () => {
 
   const [isLoading, setIsLoading] = useState(false);
   const [message, setMessage] = useState('')
+
+  const navigate = useNavigate()
 
   const submitHandler = (event) => {
     event.preventDefault();
@@ -48,6 +50,7 @@ const Signup = () => {
           setIsLoading(false);
           if (res.ok) {
             console.log('User has successfully signed up')
+            navigate('/login')
           } else {
             return res.json().then(() => {
               let errorMessage = 'Signup failed'
