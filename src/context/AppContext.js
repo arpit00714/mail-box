@@ -16,6 +16,7 @@ const ContextProvider = (props) => {
     login: loginHandler,
   };
 
+  
   return (
     <AppContext.Provider value={authContext}>
       {props.children}

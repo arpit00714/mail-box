@@ -40,6 +40,7 @@ function Home() {
   return (
     <main>
     <h1>Welcome to your Mail Box</h1>
+    
     <h3 className="mb-4">Write an Email</h3>
       <div className="container">
 
