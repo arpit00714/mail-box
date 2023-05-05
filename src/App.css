@@ -1,6 +1,6 @@
 body {
-    background-color: hsl(0, 0%, 20%);
-    color: white;
+    /* background-color: hsl(0, 0%, 20%);
+    color: white; */
     margin: 0;
     text-align: center;
 }
@@ -9,4 +9,8 @@ body {
     max-width: 800px;
     margin-inline: auto;
     text-align: left;
+}
+.container {
+    max-width: 800px;
+
 }

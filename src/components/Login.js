@@ -62,7 +62,7 @@ const Login = () => {
         let url =
             'https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=AIzaSyBQICA6ovCbZscp1SQ8m_QhjVdHDBN7SoU';
 
-        if (enteredEmail != '' && enteredPassword != '') {
+        if (enteredEmail === '' && enteredPassword === '') {
             setMessage('All Fields are mandatory')
             return
         }

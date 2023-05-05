@@ -11,13 +11,13 @@ const ContextProvider = (props) => {
     localStorage.setItem('user', JSON.stringify(user))
   };
 
-  const cartContext = {
+  const authContext = {
     user,
     login: loginHandler,
   };
 
   return (
-    <AppContext.Provider value={cartContext}>
+    <AppContext.Provider value={authContext}>
       {props.children}
     </AppContext.Provider>
   );
