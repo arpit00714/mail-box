@@ -1,56 +1,65 @@
-import { useState,useContext } from "react";
-import ReactQuill from 'react-quill';
-import 'react-quill/dist/quill.snow.css';
-import Form from 'react-bootstrap/Form';
-import Button from "react-bootstrap/Button";
+import { useState,useContext, useEffect, useRef } from "react";
+import Container from 'react-bootstrap/Container';
+import Row from 'react-bootstrap/Row';
+import Col from 'react-bootstrap/Col';
 
-import {AppContext} from "../context/AppContext"
+import { AppContext } from "../context/AppContext"
+import EmailForm from "./EmailForm";
+import Inbox from "./Inbox";
+import Sidebar from "./Sidebar";
+
 
 function Home() {
-  const [value, setValue] = useState('')
-  const {user} = useContext(AppContext)
+  // const [value, setValue] = useState('')
+  // const {user} = useContext(AppContext)
+  const [recievedMails, setRecievedMails] = useState([])
+  const [show, setShow] = useState(false)
+  const { user } = useContext(AppContext)
+
 
   const userEmail = user?.email?.replace(/\.|@/g, "")
 
-  const url = `https://mail-box-9be79-default-rtdb.firebaseio.com/${userEmail}/sent-mails.json`
+  useEffect(() => {
 
-  const handleSubmit = async (e) => {
-    e.preventDefault()
-    const options = {
-      method: 'POST',
-      body: JSON.stringify({
-        content : value
-      }),
-      headers: {
-          'Content-Type': 'application/json',
-      },
-  }
-  try {
+    getMails()
+  }, [])
 
-    const res = await fetch(url,options)
-    const data = await res.json()
-    alert('Email Sent Succesfully')
-    setValue('')
-  } catch (error) {
-    console.error( error)
-  }
+  const getMails = async () => {
+    const url = `https://mail-box-9be79-default-rtdb.firebaseio.com/${userEmail}/recieved-mails.json`
 
+    try {
+
+      const res = await fetch(url)
+      const data = await res.json()
+      const mails = []
+      for (let key in data) {
+        mails.push({
+          id: key,
+          content: data[key].content,
+          sentBy: data[key].sentBy
+        })
+      }
+      setRecievedMails(mails)
+    } catch (error) {
+      alert(error.message)
+    }
   }
 
   return (
     <main>
-    <h1>Welcome to your Mail Box</h1>
-    
-    <h3 className="mb-4">Write an Email</h3>
-      <div className="container">
-
-        <ReactQuill theme="snow" value={value} onChange={setValue} />
-        <Form onSubmit={handleSubmit} className="mt-2">
-          <Button variant="primary" type="submit">
-            Send
-          </Button>
-        </Form>
-      </div>
+      <h1 className="mb-4">Welcome to your Mail Box</h1>
+     <div>
+        <Row className='vh-100'>
+          <Col md={4} className=' shadow-lg bg-dark bg-gradient'>
+            <Sidebar setShow={setShow} />
+          </Col>
+          <Col md={8}>
+            <EmailForm setShow={setShow} show={show} />
+            <Inbox mails={recievedMails}  />
+          </Col>
+        </Row>
+        </div>
+        
   </main>
 
   )

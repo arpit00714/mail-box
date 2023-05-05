@@ -1,6 +1,6 @@
 import { useState, useRef, useContext } from 'react';
 // import { Link } from 'react-router-dom';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate,Link } from 'react-router-dom';
 // import { useDispatch } from 'react-redux';
 
 // import { authActions } from '../../store/auth';
@@ -125,7 +125,7 @@ const Login = () => {
           {isLoading ? 'Logging In...' : 'Log In'}
           </Button>
           <br />
-          <Form.Text ><a href="#"> Forgot Password ?</a></Form.Text>
+          <Form.Text>Or <Link to={'/signup'}>Signup...</Link></Form.Text>
         </Form>
       </section >
     );

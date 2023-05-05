@@ -1,8 +1,9 @@
 body {
-    /* background-color: hsl(0, 0%, 20%);
-    color: white; */
+    background-color: hsl(0, 0%, 20%);
+    color: white;
     margin: 0;
     text-align: center;
+    overflow-x: hidden;
 }
 
 .auth form {
@@ -10,8 +11,11 @@ body {
     margin-inline: auto;
     text-align: left;
 }
-.container {
-    max-width: 800px;
+
+.html {
+    /* border: red solid 2px; */
+    max-height: 2rem;
+    overflow-y: hidden;
 
 }
 
