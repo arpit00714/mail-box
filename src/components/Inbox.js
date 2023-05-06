@@ -1,6 +1,6 @@
 
 import ListGroup from 'react-bootstrap/ListGroup';
-import { useContext} from 'react';
+import { useContext, useEffect} from 'react';
 import Button from 'react-bootstrap/Button';
 
 import { AppContext } from '../context/AppContext';
@@ -9,9 +9,16 @@ import { useNavigate } from 'react-router-dom';
 
 function Inbox({ mails }) {
 
-    const { changeReadStatus, deleteMail } = useContext(AppContext)
+    const { changeReadStatus, deleteMail, getMails } = useContext(AppContext)
 
     const navigate = useNavigate()
+
+    useEffect(() => {
+        setInterval(() => {
+          getMails()
+        }, 2000);
+      }, [])
+  
     // const { user,setTotalUnread,getMails,deleteMail } = useContext(AppContext)
 
     // useEffect(() => {

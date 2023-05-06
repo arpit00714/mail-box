@@ -1,14 +1,20 @@
 import ListGroup from 'react-bootstrap/ListGroup';
-import { useContext } from 'react';
+import { useContext, useEffect } from 'react';
 import { AppContext } from '../context/AppContext';
 import { useNavigate } from 'react-router-dom';
 
 
 function SentInbox() {
 
-  const { sentMails,changeReadStatus } = useContext(AppContext)
+  const { sentMails,changeReadStatus,getSentMails  } = useContext(AppContext)
   const navigate = useNavigate()
- console.log(sentMails);
+
+  useEffect(() => {
+    setInterval(() => {
+      getSentMails()
+    }, 2000);
+  }, [])
+
   const onClick = (mail) => {
     const sent = true
     changeReadStatus(mail,sent)
