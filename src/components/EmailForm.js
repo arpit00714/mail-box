@@ -26,7 +26,8 @@ function EmailForm({show,setShow}) {
         method: 'POST',
         body: JSON.stringify({
           content: value,
-          sendTo
+          sendTo: emailRef.current.value,
+          read: false
         }),
         headers: {
           'Content-Type': 'application/json',
@@ -67,7 +68,7 @@ function EmailForm({show,setShow}) {
     <Form onSubmit={handleSubmit} className="mt-2">
           <Form.Group controlId="sendToEmail" >
             <Form.Label>Send To :</Form.Label>
-            <Form.Control type="email" placeholder="Enter email" ref={emailRef} required name="email" />
+            <Form.Control type="email" placeholder="Enter email" ref={emailRef} minLength={8} required name="email" />
           </Form.Group>
           <ReactQuill theme="snow" value={value} onChange={setValue} />
           <Button variant="primary" className="mt-3" type="submit">

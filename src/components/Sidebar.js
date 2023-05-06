@@ -1,28 +1,36 @@
-
 import Button from "react-bootstrap/Button";
-import Stack from 'react-bootstrap/Stack';
+import Stack from "react-bootstrap/Stack";
 import Badge from "react-bootstrap/Badge";
-import ListGroup from 'react-bootstrap/ListGroup';
+import ListGroup from "react-bootstrap/ListGroup";
 import { useContext } from "react";
 import { AppContext } from "../context/AppContext";
 
-function Sidebar({ setShow }) {
-
-  const {totalUnread} = useContext(AppContext)
+function Sidebar({ setShow, showSent }) {
+  const { totalUnread, totalUnreadSent } = useContext(AppContext);
 
   return (
-    <Stack gap={3} className='p-4'>
-      <Button variant="primary" onClick={() => setShow(true)}>Compose Email</Button>
+    <Stack gap={3} className="p-4">
+      <Button variant="primary" onClick={() => setShow(true)}>
+        Compose Email
+      </Button>
       <ListGroup className="text-start">
-      <ListGroup.Item className="d-flex justify-content-between"> Inbox 
-         <Badge bg="dark">{totalUnread} unread</Badge>  
-      </ListGroup.Item>
-      <ListGroup.Item>Dapibus lorem</ListGroup.Item>
-      <ListGroup.Item>Aspernatur, reiciendis</ListGroup.Item>
-      <ListGroup.Item>  Libero, nemo</ListGroup.Item>
-    </ListGroup>
+        <ListGroup.Item className="d-flex justify-content-between">
+          <span className="link" onClick={() => showSent(false)}>
+            Inbox
+          </span>
+          <Badge bg="dark">{totalUnread} unread</Badge>
+        </ListGroup.Item>
+        <ListGroup.Item className="d-flex justify-content-between">
+          <span className="link" onClick={() => showSent(true)}>
+            Sent
+          </span>
+          <Badge bg="dark">{totalUnreadSent} unread</Badge>
+        </ListGroup.Item>
+        <ListGroup.Item>Aspernatur</ListGroup.Item>
+        <ListGroup.Item> Libero, nemo</ListGroup.Item>
+      </ListGroup>
     </Stack>
-  )
+  );
 }
 
 export default Sidebar;
