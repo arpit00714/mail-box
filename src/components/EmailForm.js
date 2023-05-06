@@ -37,7 +37,8 @@ function EmailForm({show,setShow}) {
         method: 'POST',
         body: JSON.stringify({
           content: value,
-          sentBy : user.email
+          sentBy : user.email,
+          read: false
         }),
         headers: {
           'Content-Type': 'application/json',

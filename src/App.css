@@ -14,8 +14,18 @@ body {
 
 .html {
     /* border: red solid 2px; */
+    color: black;
     max-height: 2rem;
     overflow-y: hidden;
 
+}
+
+.link {
+    cursor : pointer;
+
+}
+
+.link:hover {
+    opacity: 0.8;
 }
 
