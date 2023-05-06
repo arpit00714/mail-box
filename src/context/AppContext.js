@@ -56,7 +56,7 @@ const ContextProvider = (props) => {
         mails.push({
           id: key,
           content: data[key].content,
-          sendTo: data[key].sendTo,
+          sentBy: data[key].sendTo,
           read: data[key].read
         })
       }
@@ -64,8 +64,8 @@ const ContextProvider = (props) => {
       mails.forEach(mail => {
         if (!mail.read) totalUnreadMessages += 1
       })
-      setTotalUnreadSent(totalUnreadMessages)
       setSentMails(mails)
+      setTotalUnreadSent(totalUnreadMessages)
     } catch (error) {
       alert(error.message)
     }

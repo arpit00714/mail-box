@@ -2,10 +2,10 @@ import Card from "react-bootstrap/Card"
 import Button from 'react-bootstrap/Button'
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
-import {Link, useParams,useLocation} from 'react-router-dom';
-import { useState, useContext, useEffect } from "react";
+import {Link,useLocation} from 'react-router-dom';
+import { useState, useEffect } from "react";
 
-import { AppContext } from "../context/AppContext"
+// import { AppContext } from "../context/AppContext"
 import EmailForm from "./EmailForm";
 import Sidebar from "./Sidebar";
 
@@ -13,15 +13,15 @@ function FullMail() {
 
   const [show, setShow] = useState(false)
   const [mail, setMail] = useState({})
-  const {user} = useContext(AppContext)
+//   const {user} = useContext(AppContext)
   const location = useLocation()
-  let params = useParams()
+//   let params = useParams()
 
   useEffect(() => {
 
     // fetchMail(params.id)
     setMail(location.state.mail)
-  },[])
+  },[location])
 
 //   const fetchMail = async (id) => {
 //     const userEmail = user?.email?.replace(/\.|@/g, "")
@@ -48,7 +48,7 @@ function FullMail() {
          {mail?.sentBy && <Card.Title className="border-bottom pb-2">{mail.sentBy}</Card.Title> }
         {mail?.sendTo && <Card.Title className="border-bottom pb-2">{mail.sendTo}</Card.Title> }
         <div className="border-bottom mb-2" dangerouslySetInnerHTML={{ __html: mail?.content }} />
-        
+
         <Link to='/home'><Button variant="primary">Back</Button></Link>
       </Card.Body>
     </Card>

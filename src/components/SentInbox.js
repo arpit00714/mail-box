@@ -2,6 +2,7 @@ import ListGroup from 'react-bootstrap/ListGroup';
 import { useContext, useEffect } from 'react';
 import { AppContext } from '../context/AppContext';
 import { useNavigate } from 'react-router-dom';
+import useFetchData from '../useFetchData';
 
 
 function SentInbox() {
