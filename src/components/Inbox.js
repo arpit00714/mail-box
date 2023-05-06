@@ -1,13 +1,14 @@
 
 import ListGroup from 'react-bootstrap/ListGroup';
-import { useState, useContext,useEffect } from 'react';
-import FullMail from './FullMail';
+import { useContext, useEffect } from 'react';
+
 import { AppContext } from '../context/AppContext';
 import { useNavigate } from 'react-router-dom';
+import { Button } from 'react-bootstrap';
 
 function Inbox({ mails }) {
     const navigate = useNavigate()
-    const { user,setTotalUnread,getMails } = useContext(AppContext)
+    const { user,setTotalUnread,getMails,deleteMail } = useContext(AppContext)
 
     useEffect(() => {
         if (!user) {
@@ -54,6 +55,8 @@ function Inbox({ mails }) {
                                 <span className="link text-primary" onClick={() => changeReadStatus(mail)}>{mail.sentBy}</span> 
                             </p>
                             <div className='html' dangerouslySetInnerHTML={{ __html: mail.content }} ></div>
+
+                            <Button variant='danger' onClick={() => deleteMail(mail.id)}>Delete</Button>
  
                             </ListGroup.Item>
                 ))
