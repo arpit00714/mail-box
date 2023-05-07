@@ -47,6 +47,7 @@ function FullMail() {
         </div> */}
          {mail?.sentBy && <Card.Title className="border-bottom pb-2">{mail.sentBy}</Card.Title> }
         {mail?.sendTo && <Card.Title className="border-bottom pb-2">{mail.sendTo}</Card.Title> }
+        <Card.Header>{mail.subject}</Card.Header>
         <div className="border-bottom mb-2" dangerouslySetInnerHTML={{ __html: mail?.content }} />
 
         <Link to='/home'><Button variant="primary">Back</Button></Link>

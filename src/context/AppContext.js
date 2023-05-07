@@ -28,6 +28,7 @@ const ContextProvider = (props) => {
         mails.push({
           id: key,
           content: data[key].content,
+          subject: data[key].subject,
           sentBy: data[key].sentBy,
           read: data[key].read
         })
@@ -55,6 +56,7 @@ const ContextProvider = (props) => {
       for (let key in data) {
         mails.push({
           id: key,
+          subject: data[key].subject,
           content: data[key].content,
           sentBy: data[key].sendTo,
           read: data[key].read

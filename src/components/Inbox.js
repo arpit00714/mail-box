@@ -13,11 +13,20 @@ function Inbox({ mails }) {
 
     const navigate = useNavigate()
 
+    // useEffect(() => {
+    //     setInterval(() => {
+    //       getMails()
+    //     }, 2000);
+    //   }, [])
     useEffect(() => {
-        setInterval(() => {
-          getMails()
+        const interval = setInterval(() => {
+          getMails();
         }, 2000);
-      }, [])
+
+        return () => {
+            clearInterval(interval);
+          };
+        }, []);
   
     // const { user,setTotalUnread,getMails,deleteMail } = useContext(AppContext)
 
@@ -55,40 +64,42 @@ function Inbox({ mails }) {
     //     }
     // }
     const onClick = (mail) => {
-        changeReadStatus(mail)
-        navigate(`/full-mail/${mail.id}`,{state :{mail}})
-    }
+        changeReadStatus(mail);
+        navigate(`/full-mail/${mail.id}`, { state: { mail } });
+      };
+      
 
     return (
         <>
         <h1>Recieved Mails</h1>
-        <ListGroup>
-            {
-                mails.map(mail => (
+      <ListGroup>
+        {mails.map((mail) => (
+          <ListGroup.Item
+            key={mail.id}
+            className="d-flex justify-content-between"
+          >
+            <p>
+              <span
+                style={{ width: "1rem", height: "1rem" }}
+                className={`bg-primary me-2 ${
+                  mail.read ? "d-none" : "d-inline-block"
+                } rounded-circle`}
+              />
+              <span className="link text-primary" onClick={() => onClick(mail)}>
+                {mail.sentBy}
+              </span>
+            </p>
+            <div className="subject">{mail.subject.substring(0, 30)}...</div>
 
-                    // <ListGroup.Item key={mail.id} className='d-flex justify-content-between'>
-                    //         <p>
-                    //             <span style={{width: '1rem', height: '1rem' }} className={`bg-primary me-2 ${mail.read ? 'd-none' : 'd-inline-block'} rounded-circle`} /> 
-                    //             <span className="link text-primary" onClick={() => changeReadStatus(mail)}>{mail.sentBy}</span> 
-                    //         </p>
-                    //         <div className='html' dangerouslySetInnerHTML={{ __html: mail.content }} ></div>
-
-                    //         <Button variant='danger' onClick={() => deleteMail(mail.id)}>Delete</Button>
- 
-                    //         </ListGroup.Item>
-                    <ListGroup.Item key={mail.id} className='d-flex justify-content-between'>
-                    <p>
-                        <span style={{ width: '1rem', height: '1rem' }} className={`bg-primary me-2 ${mail.read ? 'd-none' : 'd-inline-block'} rounded-circle`} />
-                        <span className="link text-primary" onClick={() => onClick(mail)}>{mail.sentBy}</span>
-                    </p>
-                    <div className='html' dangerouslySetInnerHTML={{ __html: mail.content }} ></div>
-                    <Button variant='danger' onClick={() => deleteMail(mail.id)}>Delete</Button>
-                </ListGroup.Item>
-                ))
-            }
-        </ListGroup>
+            <Button variant="danger" onClick={() => deleteMail(mail.id)}>
+              Delete
+            </Button>
+          </ListGroup.Item>
+        ))}
+      </ListGroup>
+    
         </>
-    )
+    );
 }
 
 export default Inbox;

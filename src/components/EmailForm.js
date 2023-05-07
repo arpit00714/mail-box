@@ -11,6 +11,7 @@ function EmailForm({show,setShow}) {
 
     const { user } = useContext(AppContext)
     const emailRef = useRef()
+    const subjectRef = useRef()
     const [value, setValue] = useState('')
     const userEmail = user?.email?.replace(/\.|@/g, "")
     const sendTo = emailRef.current?.value?.replace(/\.|@/g, "")
@@ -25,8 +26,10 @@ function EmailForm({show,setShow}) {
       const options = {
         method: 'POST',
         body: JSON.stringify({
-          content: value,
+          // content: value,
           sendTo: emailRef.current.value,
+          subject : subjectRef.current.value,
+          content: value,
           read: false
         }),
         headers: {
@@ -37,8 +40,10 @@ function EmailForm({show,setShow}) {
       const options2 = {
         method: 'POST',
         body: JSON.stringify({
-          content: value,
+          // content: value,
           sentBy : user.email,
+          subject : subjectRef.current.value,
+          content: value,
           read: false
         }),
         headers: {
@@ -46,12 +51,14 @@ function EmailForm({show,setShow}) {
         },
       }
 
-      try {
-        const res = await fetch(url, options)
-        const res2 = await fetch(url2, options2)
+       try {
+      //   const res = await fetch(url, options)
+      //   const res2 = await fetch(url2, options2)
 
-        await res.json()
-        await res2.json()
+      //   await res.json()
+      //   await res2.json()
+      const allPromises = await Promise.all([fetch(url, options),fetch(url2, options2)])
+        allPromises.forEach(res => res.json())
         setShow(false)
         alert('Email Sent Succesfully')
       } catch (error) {
@@ -69,6 +76,10 @@ function EmailForm({show,setShow}) {
           <Form.Group controlId="sendToEmail" >
             <Form.Label>Send To :</Form.Label>
             <Form.Control type="email" placeholder="Enter email" ref={emailRef} minLength={8} required name="email" />
+          </Form.Group>
+          <Form.Group controlId="subject" >
+            <Form.Label>Subject :</Form.Label>
+            <Form.Control type="text" placeholder="Enter Subject" ref={subjectRef} minLength={8} required name="subject" />
           </Form.Group>
           <ReactQuill theme="snow" value={value} onChange={setValue} />
           <Button variant="primary" className="mt-3" type="submit">
